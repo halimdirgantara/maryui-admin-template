@@ -15,7 +15,7 @@ return [
      *               <x-mary-card />
      *
      */
-    'prefix' => env('MARY_PREFIX', 'mary-'),
+    'prefix' => env('MARY_PREFIX', ''),
 
     /**
      * Default route prefix.
