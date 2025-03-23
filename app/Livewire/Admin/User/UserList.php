@@ -34,12 +34,17 @@ class UserList extends Component
        return $query->paginate(10);
     }
 
+    public function edit($id)
+    {
+        dd($id);
+    }
+
     public function render()
     {
         $headers = [
             ['key' => 'id', 'label' => '#'],
             ['key' => 'name', 'label' => 'Nice Name'],
-            ['key' => 'email', 'label' => 'Email']
+            ['key' => 'email', 'label' => 'Email'],
         ];
 
         return view('livewire.admin.user.user-list',[
