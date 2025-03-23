@@ -23,6 +23,32 @@ class Sidebar extends Component
                 'active' => request()->routeIs('dashboard'),
             ],
             [
+                'name' => 'User Management',
+                'icon' => 'o-user-group',
+                'route' => '#',
+                'active' => request()->routeIs('admin.user*'),
+                'subMenu' => [
+                    [
+                        'name' => 'User',
+                        'icon' => 'o-user',
+                        'route' => '/admin/user',
+                        'active' => request()->routeIs('admin.user'),
+                    ],
+                    [
+                        'name' => 'Role',
+                        'icon' => 'o-cog',
+                        'route' => '#',
+                        'active' => request()->routeIs('admin.user.role'),
+                    ],
+                    [
+                        'name' => 'Permission',
+                        'icon' => 'o-cog',
+                        'route' => '#',
+                        'active' => request()->routeIs('admin.user.permission'),
+                    ],
+                ],
+            ],
+            [
                 'name' => 'Settings',
                 'icon' => 'o-cog',
                 'route' => '#',
