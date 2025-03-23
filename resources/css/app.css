@@ -41,3 +41,13 @@
 .mary-table-pagination button {
     @apply cursor-pointer
 }
+
+/* For dark mode*/
+.mary-table-pagination span[aria-disabled="true"] span {
+    @apply bg-inherit
+}
+ 
+/* For dark mode*/
+.mary-table-pagination button {
+    @apply bg-base-100
+}

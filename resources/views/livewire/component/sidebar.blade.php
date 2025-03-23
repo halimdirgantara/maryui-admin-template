@@ -38,6 +38,7 @@
                         link="{{ $menuItem['route'] }}" />
                 @endif
             @endforeach
+
         </x-menu>
     </x-slot:sidebar>
 </div>
