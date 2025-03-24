@@ -8,13 +8,15 @@
 
     <x-modal wire:model="userForm" title="Hello" subtitle="Livewire example">
         <x-form no-separator>
-            <x-input label="Name" icon="o-user" placeholder="The full name" />
-            <x-input label="Email" icon="o-envelope" placeholder="The e-mail" />
-     
+            <x-input wire:model="name" label="Name" icon="o-user" placeholder="The full name" />
+            <x-input wire:model="email" label="Email" icon="o-envelope" placeholder="The e-mail" />
+            <x-password wire:model="password" label="Password" icon="o-lock-closed"
+                placeholder="Leave blank for default password" right />
+
             {{-- Notice we are using now the `actions` slot from `x-form`, not from modal --}}
             <x-slot:actions>
                 <x-button label="Cancel" @click="$wire.userForm = false" />
-                <x-button label="Confirm" class="btn-primary" />
+                <x-button label="Confirm" class="btn-primary" wire:click="save" />
             </x-slot:actions>
         </x-form>
     </x-modal>
