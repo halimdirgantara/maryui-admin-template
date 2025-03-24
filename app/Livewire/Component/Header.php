@@ -15,6 +15,11 @@ class Header extends Component
         $this->dispatch('show-drawer');
     }
 
+    public function create()
+    {
+        $this->dispatch('create');
+    }
+
     public function render()
     {
         return view('livewire.component.header');
