@@ -8,6 +8,8 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Validate;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 class RoleList extends Component
 {
@@ -96,6 +98,75 @@ class RoleList extends Component
                 position: 'toast-top toast-end'
             );
         }
+    }
+
+    public function edit($id)
+    {
+        try {
+            $user = Role::findOrFail($id);
+
+            $this->editingRoleId = $user->id;
+            $this->name = $user->name;
+            $this->roleForm = true;
+        } catch (\Exception $e) {
+            $this->error(
+                'Role not found!',
+                timeout: 5000,
+                position: 'toast-top toast-end'
+            );
+        }
+    }
+
+    public function delete($id)
+    {
+        LivewireAlert::title('Do you want to delete this data?')
+            ->withConfirmButton('Delete')
+            ->withCancelButton('Cancel')
+            ->question()
+            ->timer(0)
+            ->onConfirm('deleteData', ['id' => $id])
+            ->toast()
+            ->show();
+    }
+
+    public function deleteData($data)
+    {
+        $roleId = $data['id'];
+
+        $role = Role::find($roleId);
+
+        if (!$role) {
+            $this->error(
+                'Role not found!',
+                timeout: 5000,
+                position: 'toast-top toast-end'
+            );
+            return;
+        }
+    
+
+        if ($role->users()->exists()) {
+            $this->error(
+                'Role is assigned to users and cannot be deleted!',
+                timeout: 5000,
+                position: 'toast-top toast-end'
+            );
+            return;
+        }
+
+
+        $role = Role::find($roleId);
+        if ($role) {
+            $role->delete();
+        }
+
+        $this->success(
+            'User Deleted!',
+            timeout: 5000,
+            position: 'toast-top toast-end'
+        );
+
+        $this->getRoles();
     }
     
     
