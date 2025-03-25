@@ -1,5 +1,5 @@
 <div>
-    <livewire:component.header :searchBar=false :title=$title :subTitle=$subTitle />
+    <livewire:component.header :searchBar=false :filter=false :create=false :title=$title :subTitle=$subTitle />
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <!-- Card 1: User Stats -->
         <x-card title="User Stats" subtitle="Overview of your account" shadow separator>

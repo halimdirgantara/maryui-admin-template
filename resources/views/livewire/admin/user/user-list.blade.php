@@ -1,12 +1,12 @@
 <div>
-    <livewire:component.header :searchBar=true :title=$title :subTitle=$subTitle />
+    <livewire:component.header :filterBar=true :createBar=true  :title=$title :subTitle=$subTitle />
 
     <x-drawer wire:model="showDrawer" class="w-11/12 lg:w-1/3" right>
         <x-toggle label="Show Not Verified Users" wire:model.live="isNotVerified" hint="Show users that have not been verified" right />
         <x-button label="Close" @click="$wire.showDrawer = false" />
     </x-drawer>
 
-    <x-modal wire:model="userForm" title="Hello" subtitle="Livewire example">
+    <x-modal wire:model="userForm" title="User Form" subtitle="Create Or Edit User">
         <x-form no-separator>
             <x-input wire:model="name" label="Name" icon="o-user" placeholder="The full name" />
             <x-input wire:model="email" label="Email" icon="o-envelope" placeholder="The e-mail" />

@@ -27,10 +27,10 @@ class UserList extends Component
     public bool $showDrawer = false;
     public bool $userForm = false;
     public ?int $editingUserId = null;
-    
+
     #[Validate('required|string|min:2|max:255')]
     public string $name = '';
-    
+
     #[Validate('required|email|unique:users,email')]
     public string $email = '';
 
@@ -123,7 +123,7 @@ class UserList extends Component
     {
         try {
             $user = User::findOrFail($id);
-            
+
             $this->editingUserId = $user->id;
             $this->name = $user->name;
             $this->email = $user->email;
@@ -155,8 +155,7 @@ class UserList extends Component
     {
         $userId = $data['id'];
 
-        if(Auth::user()->id === $userId)
-        {
+        if (Auth::user()->id === $userId) {
             $this->error(
                 'Cannot Delete Yourself!',
                 timeout: 5000,
@@ -187,7 +186,7 @@ class UserList extends Component
         if ($this->isNotVerified) {
             $query->whereNull('email_verified_at');
         }
-        
+
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%')
                 ->orWhere('email', 'like', '%' . $this->search . '%');
