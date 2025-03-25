@@ -3,6 +3,7 @@
 use App\Livewire\Welcome;
 use App\Livewire\Auth\Login;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Role\RoleList;
 use App\Livewire\Admin\User\UserList;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', Welcome::class)->name('welcome');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/admin/user', UserList::class)->name('admin.user');
+    Route::get('/admin/role', RoleList::class)->name('admin.role');
 });

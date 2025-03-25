@@ -2,7 +2,7 @@
     <livewire:component.header :searchBar=true :title=$title :subTitle=$subTitle />
 
     <x-drawer wire:model="showDrawer" class="w-11/12 lg:w-1/3" right>
-        <div>...</div>
+        <x-toggle label="Show Not Verified Users" wire:model.live="isNotVerified" hint="Show users that have not been verified" right />
         <x-button label="Close" @click="$wire.showDrawer = false" />
     </x-drawer>
 

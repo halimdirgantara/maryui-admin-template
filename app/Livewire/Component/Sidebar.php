@@ -37,7 +37,7 @@ class Sidebar extends Component
                     [
                         'name' => 'Role',
                         'icon' => 'o-cog',
-                        'route' => '#',
+                        'route' => '/admin/role',
                         'active' => request()->routeIs('admin.user.role'),
                     ],
                     [

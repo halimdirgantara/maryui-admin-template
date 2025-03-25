@@ -22,6 +22,8 @@ class UserList extends Component
     public bool $searchBar = true;
 
     public string $search = '';
+    public bool $isNotVerified = false;
+
     public bool $showDrawer = false;
     public bool $userForm = false;
     public ?int $editingUserId = null;
@@ -47,6 +49,18 @@ class UserList extends Component
     {
         $this->reset();
         $this->userForm = true;
+    }
+
+    #[On('searching')]
+    public function updatedSearch($search)
+    {
+        $this->search = $search;
+        $this->getUsers();
+    }
+
+    public function updatedIsNotVerified()
+    {
+        $this->getUsers();
     }
 
     public function save()
@@ -169,10 +183,16 @@ class UserList extends Component
     public function getUsers()
     {
         $query = User::query();
+
+        if ($this->isNotVerified) {
+            $query->whereNull('email_verified_at');
+        }
+        
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%')
                 ->orWhere('email', 'like', '%' . $this->search . '%');
         }
+
         return $query->paginate(10);
     }
 
@@ -183,6 +203,7 @@ class UserList extends Component
             ['key' => 'id', 'label' => '#'],
             ['key' => 'name', 'label' => 'Name'],
             ['key' => 'email', 'label' => 'Email'],
+            ['key' => 'email_verified_at', 'label' => 'Verified At'],
         ];
 
         return view('livewire.admin.user.user-list', [
