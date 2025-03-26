@@ -36,13 +36,13 @@ class Sidebar extends Component
                     ],
                     [
                         'name' => 'Role',
-                        'icon' => 'o-cog',
+                        'icon' => 'o-user-plus',
                         'route' => '/admin/role',
                         'active' => request()->routeIs('admin.user.role'),
                     ],
                     [
                         'name' => 'Permission',
-                        'icon' => 'o-cog',
+                        'icon' => 'o-lock-open',
                         'route' => '#',
                         'active' => request()->routeIs('admin.user.permission'),
                     ],
@@ -50,25 +50,25 @@ class Sidebar extends Component
             ],
             [
                 'name' => 'Settings',
-                'icon' => 'o-cog',
+                'icon' => 'o-cog-8-tooth',
                 'route' => '#',
                 'active' => request()->routeIs('settings*'),
                 'subMenu' => [
                     [
                         'name' => 'General',
-                        'icon' => 'o-cog',
+                        'icon' => 'o-cog-8-tooth',
                         'route' => '#',
                         'active' => request()->routeIs('settings.general'),
                     ],
                     [
                         'name' => 'Security',
-                        'icon' => 'o-cog',
+                        'icon' => 'o-cog-8-tooth',
                         'route' => '#',
                         'active' => request()->routeIs('settings.security'),
                     ],
                     [
                         'name' => 'Notifications',
-                        'icon' => 'o-cog',
+                        'icon' => 'o-cog-8-tooth',
                         'route' => '#',
                         'active' => request()->routeIs('settings.notifications'),
                     ],
