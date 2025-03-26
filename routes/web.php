@@ -17,7 +17,7 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('login');
     })->name('logout');
 
-    Route::get('/', Welcome::class)->name('welcome');
+    Route::get('/', Dashboard::class)->name('welcome');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/admin/user', UserList::class)->name('admin.user');
     Route::get('/admin/role', RoleList::class)->name('admin.role');

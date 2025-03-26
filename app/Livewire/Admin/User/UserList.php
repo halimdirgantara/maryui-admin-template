@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Validate;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
@@ -33,6 +34,9 @@ class UserList extends Component
 
     #[Validate('required|email|unique:users,email')]
     public string $email = '';
+
+    #[Validate('required|exists:roles,name')]
+    public $role;
 
     #[Validate('nullable|string|min:6')]
     public ?string $password = null;
@@ -63,13 +67,31 @@ class UserList extends Component
         $this->getUsers();
     }
 
+    public function getUsers()
+    {
+        $query = User::query();
+        $query->with('roles');
+
+        if ($this->isNotVerified) {
+            $query->whereNull('email_verified_at');
+        }
+
+        if ($this->search) {
+            $query->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('email', 'like', '%' . $this->search . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
     public function save()
     {
         if ($this->editingUserId) {
             $this->validate([
                 'name' => 'required|string|min:2|max:255',
                 'email' => 'required|email|unique:users,email,' . $this->editingUserId,
-                'password' => 'nullable|string|min:6'
+                'password' => 'nullable|string|min:6',
+                'role'     => 'required|exists:roles,name',
             ]);
         } else {
             $this->validate();
@@ -87,6 +109,7 @@ class UserList extends Component
                 }
 
                 $user->save();
+                $user->syncRoles([$this->role]);
 
                 $this->success(
                     'User Updated Successfully!',
@@ -95,11 +118,13 @@ class UserList extends Component
                 );
             } else {
 
-                User::create([
+                $createdUser = User::create([
                     'name' => $this->name,
                     'email' => $this->email,
                     'password' => Hash::make($this->password ?? 'password')
                 ]);
+
+                $createdUser->assignRole($this->role);
 
                 $this->success(
                     'User Created Successfully!',
@@ -127,7 +152,8 @@ class UserList extends Component
             $this->editingUserId = $user->id;
             $this->name = $user->name;
             $this->email = $user->email;
-            $this->password = null; // Reset password field
+            $this->role = $user->roles->pluck('name')->first();
+            $this->password = null;
             $this->userForm = true;
         } catch (\Exception $e) {
             $this->error(
@@ -179,34 +205,27 @@ class UserList extends Component
         $this->getUsers();
     }
 
-    public function getUsers()
-    {
-        $query = User::query();
-
-        if ($this->isNotVerified) {
-            $query->whereNull('email_verified_at');
-        }
-
-        if ($this->search) {
-            $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('email', 'like', '%' . $this->search . '%');
-        }
-
-        return $query->paginate(10);
-    }
-
-
     public function render()
     {
         $headers = [
             ['key' => 'id', 'label' => '#'],
             ['key' => 'name', 'label' => 'Name'],
             ['key' => 'email', 'label' => 'Email'],
+            [
+                'key'    => 'roles',
+                'label'  => 'Roles',
+                'format' => function ($user) {
+                    return $user->roles->pluck('name')->implode(', ');
+                },
+            ],
             ['key' => 'email_verified_at', 'label' => 'Verified At'],
         ];
 
+        $roles = Role::all();
+
         return view('livewire.admin.user.user-list', [
             'users' => $this->getUsers(),
+            'roles'   => $roles,
             'headers' => $headers
         ]);
     }
