@@ -6,11 +6,14 @@
             </x-slot:middle>
         @endif
         <x-slot:actions>
-            @if ($filterBar)
+            @if ($filterButton)
                 <x-button icon="o-funnel" label="Filters" wire:click="showDrawerPage" />
             @endif
-            @if ($createBar)
+            @if ($createButton)
                 <x-button icon="o-plus" class="btn-primary" wire:click="create" />
+            @endif
+            @if ($customButton)
+                <x-button icon="o-plus" class="btn-primary" wire:click="custom" />
             @endif
             <x-theme-toggle class="btn btn-circle" />
         </x-slot:actions>

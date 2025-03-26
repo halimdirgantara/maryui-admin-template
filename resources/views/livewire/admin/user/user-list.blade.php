@@ -1,5 +1,5 @@
 <div>
-    <livewire:component.header :filterBar=true :createBar=true :title=$title :subTitle=$subTitle />
+    <livewire:component.header :filterButton=true :createButton=true :title=$title :subTitle=$subTitle />
 
     <x-drawer wire:model="showDrawer" class="w-11/12 lg:w-1/3" right>
         <x-toggle label="Show Not Verified Users" wire:model.live="isNotVerified"

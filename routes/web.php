@@ -1,11 +1,11 @@
 <?php
 
-use App\Livewire\Welcome;
+use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\Login;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Role\RoleList;
 use App\Livewire\Admin\User\UserList;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Admin\Permission\PermissionList;
 
 
 Route::get('/login', Login::class)->name('login');
@@ -19,6 +19,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/', Dashboard::class)->name('welcome');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/admin/user', UserList::class)->name('admin.user');
-    Route::get('/admin/role', RoleList::class)->name('admin.role');
+
+    Route::get('/user-management/user', UserList::class)->name('user-management.user');
+    Route::get('/user-management/role', RoleList::class)->name('user-management.role');
+    Route::get('/user-management/permission', PermissionList::class)->name('user-management.permission');
 });

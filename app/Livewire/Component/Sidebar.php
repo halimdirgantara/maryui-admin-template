@@ -18,7 +18,7 @@ class Sidebar extends Component
         $this->menu = [
             [
                 'name' => 'Dashboard',
-                'route' => '/dashboard',
+                'route' => route('dashboard'),
                 'icon' => 'o-cube',
                 'active' => request()->routeIs('dashboard'),
             ],
@@ -26,25 +26,25 @@ class Sidebar extends Component
                 'name' => 'User Management',
                 'icon' => 'o-user-group',
                 'route' => '#',
-                'active' => request()->routeIs('admin.user*'),
+                'active' => request()->routeIs('user-management.user*'),
                 'subMenu' => [
                     [
                         'name' => 'User',
                         'icon' => 'o-user',
-                        'route' => '/admin/user',
-                        'active' => request()->routeIs('admin.user'),
+                        'route' => route('user-management.user'),
+                        'active' => request()->routeIs('user-management.user'),
                     ],
                     [
                         'name' => 'Role',
                         'icon' => 'o-user-plus',
-                        'route' => '/admin/role',
-                        'active' => request()->routeIs('admin.user.role'),
+                        'route' => route('user-management.role'),
+                        'active' => request()->routeIs('user-management.user.role'),
                     ],
                     [
                         'name' => 'Permission',
                         'icon' => 'o-lock-open',
-                        'route' => '#',
-                        'active' => request()->routeIs('admin.user.permission'),
+                        'route' => route('user-management.permission'),
+                        'active' => request()->routeIs('user-management.user.permission'),
                     ],
                 ],
             ],
