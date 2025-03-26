@@ -1,8 +1,9 @@
 <div>
-    <livewire:component.header :filterBar=true :createBar=true  :title=$title :subTitle=$subTitle />
+    <livewire:component.header :filterBar=true :createBar=true :title=$title :subTitle=$subTitle />
 
     <x-drawer wire:model="showDrawer" class="w-11/12 lg:w-1/3" right>
-        <x-toggle label="Show Not Verified Users" wire:model.live="isNotVerified" hint="Show users that have not been verified" right />
+        <x-toggle label="Show Not Verified Users" wire:model.live="isNotVerified"
+            hint="Show users that have not been verified" right />
         <x-button label="Close" @click="$wire.showDrawer = false" />
     </x-drawer>
 
@@ -10,6 +11,8 @@
         <x-form no-separator>
             <x-input wire:model="name" label="Name" icon="o-user" placeholder="The full name" />
             <x-input wire:model="email" label="Email" icon="o-envelope" placeholder="The e-mail" />
+            <x-select label="Users" wire:model="role" :options="$roles" placeholder="Select a role"
+                placeholder-value="0" option-value="name" option-label="name" />
             <x-password wire:model="password" label="Password" icon="o-lock-closed"
                 placeholder="Leave blank for default password" right />
 
