@@ -8,7 +8,9 @@ class Header extends Component
 {
     public $title;
     public $subTitle;
-    public bool $searchBar = false;
+    public bool $searchBar = true;
+    public bool $filterBar = true;
+    public bool $createBar = true;
 
     public string $search = '';
 
