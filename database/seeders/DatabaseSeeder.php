@@ -15,9 +15,10 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            UserSeeder::class,
-            RoleSeeder::class,
-            SyncRoleToUser::class,
+            PermissionSeeder::class, // Create permissions and roles first
+            UserSeeder::class,       // Create users and assign roles
+            // RoleSeeder::class,    // Commented out as PermissionSeeder handles roles
+            // SyncRoleToUser::class, // Commented out as UserSeeder handles role assignment
         ]);
     }
 }

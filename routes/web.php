@@ -17,10 +17,24 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('login');
     })->name('logout');
 
-    Route::get('/', Dashboard::class)->name('welcome');
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    // Dashboard routes
+    Route::middleware(['can:dashboard.view'])->group(function () {
+        Route::get('/', Dashboard::class)->name('welcome');
+        Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    });
 
-    Route::get('/user-management/user', UserList::class)->name('user-management.user');
-    Route::get('/user-management/role', RoleList::class)->name('user-management.role');
-    Route::get('/user-management/permission', PermissionList::class)->name('user-management.permission');
+    // User Management routes
+    Route::prefix('user-management')->middleware(['can:user-management.view'])->group(function () {
+        Route::get('/user', UserList::class)
+            ->middleware('can:user-management.user.view')
+            ->name('user-management.user');
+            
+        Route::get('/role', RoleList::class)
+            ->middleware('can:user-management.role.view')
+            ->name('user-management.role');
+            
+        Route::get('/permission', PermissionList::class)
+            ->middleware('can:user-management.permission.view')
+            ->name('user-management.permission');
+    });
 });

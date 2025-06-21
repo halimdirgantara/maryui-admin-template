@@ -8,6 +8,7 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Validate;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
@@ -27,6 +28,19 @@ class RoleList extends Component
 
     #[Validate('required|string|min:2|max:255')]
     public string $name = '';
+    
+    public array $selectedPermissions = [];
+    public $allPermissions = [];
+    
+    // New properties for permissions modal
+    public bool $permissionsModal = false;
+    public $rolePermissions = [];
+    public string $selectedRoleName = '';
+    
+    // Properties for edit permissions modal
+    public bool $editPermissionsModal = false;
+    public ?int $editingPermissionsRoleId = null;
+    public array $selectedPermissionsForEdit = [];
 
     #[On('create')]
     public function createUserModal()
@@ -67,19 +81,18 @@ class RoleList extends Component
         try {
             if ($this->editingRoleId) {
 
-                $user = Role::findOrFail($this->editingRoleId);
-                $user->name = $this->name;
-
-                $user->save();
+                $role = Role::findOrFail($this->editingRoleId);
+                $role->name = $this->name;
+                $role->save();
 
                 $this->success(
-                    'User Updated Successfully!',
+                    'Role Updated Successfully!',
                     timeout: 5000,
                     position: 'toast-top toast-end'
                 );
             } else {
 
-                Role::create([
+                $role = Role::create([
                     'name' => $this->name
                 ]);
 
@@ -103,10 +116,10 @@ class RoleList extends Component
     public function edit($id)
     {
         try {
-            $user = Role::findOrFail($id);
+            $role = Role::findOrFail($id);
 
-            $this->editingRoleId = $user->id;
-            $this->name = $user->name;
+            $this->editingRoleId = $role->id;
+            $this->name = $role->name;
             $this->roleForm = true;
         } catch (\Exception $e) {
             $this->error(
@@ -169,6 +182,62 @@ class RoleList extends Component
         $this->getRoles();
     }
     
+    
+    public function showPermissions($id)
+    {
+        try {
+            $role = Role::findOrFail($id);
+            $this->selectedRoleName = $role->name;
+            $this->rolePermissions = $role->permissions->toArray();
+            $this->permissionsModal = true;
+        } catch (\Exception $e) {
+            $this->error(
+                'Role not found!',
+                timeout: 5000,
+                position: 'toast-top toast-end'
+            );
+        }
+    }
+    
+    public function editPermissions($id)
+    {
+        try {
+            $role = Role::findOrFail($id);
+            $this->editingPermissionsRoleId = $role->id;
+            $this->selectedRoleName = $role->name;
+            $this->allPermissions = Permission::all()->toArray();
+            $this->selectedPermissionsForEdit = $role->permissions->pluck('id')->toArray();
+            $this->editPermissionsModal = true;
+        } catch (\Exception $e) {
+            $this->error(
+                'Role not found!',
+                timeout: 5000,
+                position: 'toast-top toast-end'
+            );
+        }
+    }
+    
+    public function savePermissions()
+    {
+        try {
+            $role = Role::findOrFail($this->editingPermissionsRoleId);
+            $role->syncPermissions($this->selectedPermissionsForEdit);
+            
+            $this->success(
+                'Permissions updated successfully!',
+                timeout: 5000,
+                position: 'toast-top toast-end'
+            );
+            
+            $this->reset(['editPermissionsModal', 'editingPermissionsRoleId', 'selectedPermissionsForEdit', 'allPermissions']);
+        } catch (\Exception $e) {
+            $this->error(
+                'Error updating permissions: ' . $e->getMessage(),
+                timeout: 5000,
+                position: 'toast-top toast-end'
+            );
+        }
+    }
     
     public function render()
     {
