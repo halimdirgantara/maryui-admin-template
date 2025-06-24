@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PermissionSeeder::class, // Create permissions and roles first
+            SettingsSeeder::class,   // Create default settings
             UserSeeder::class,       // Create users and assign roles
             // RoleSeeder::class,    // Commented out as PermissionSeeder handles roles
             // SyncRoleToUser::class, // Commented out as UserSeeder handles role assignment

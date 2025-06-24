@@ -70,6 +70,7 @@ class Sidebar extends Component
                 ];
             }
         }
+
         // Settings menu
         if ($user && $user->can('settings.view')) {
             $settingsSubMenu = [];
@@ -78,7 +79,7 @@ class Sidebar extends Component
                 $settingsSubMenu[] = [
                     'name' => 'General',
                     'icon' => 'o-cog-8-tooth',
-                    'route' => '#',
+                    'route' => route('settings.general'),
                     'active' => request()->routeIs('settings.general'),
                 ];
             }
@@ -86,8 +87,8 @@ class Sidebar extends Component
             if ($user->can('settings.security.view')) {
                 $settingsSubMenu[] = [
                     'name' => 'Security',
-                    'icon' => 'o-cog-8-tooth',
-                    'route' => '#',
+                    'icon' => 'o-shield-check',
+                    'route' => route('settings.security'),
                     'active' => request()->routeIs('settings.security'),
                 ];
             }
@@ -95,9 +96,18 @@ class Sidebar extends Component
             if ($user->can('settings.notifications.view')) {
                 $settingsSubMenu[] = [
                     'name' => 'Notifications',
-                    'icon' => 'o-cog-8-tooth',
-                    'route' => '#',
+                    'icon' => 'o-bell',
+                    'route' => route('settings.notifications'),
                     'active' => request()->routeIs('settings.notifications'),
+                ];
+            }
+
+            if ($user->can('settings.system.view')) {
+                $settingsSubMenu[] = [
+                    'name' => 'System',
+                    'icon' => 'o-server',
+                    'route' => route('settings.system'),
+                    'active' => request()->routeIs('settings.system'),
                 ];
             }
 

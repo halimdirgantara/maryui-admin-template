@@ -44,6 +44,8 @@ class PermissionSeeder extends Seeder
             'settings.security.edit',
             'settings.notifications.view',
             'settings.notifications.edit',
+            'settings.system.view',
+            'settings.system.edit',
         ];
 
         // Create permissions
@@ -70,6 +72,8 @@ class PermissionSeeder extends Seeder
                 'settings.general.edit',
                 'settings.notifications.view',
                 'settings.notifications.edit',
+                'settings.system.view',
+                'settings.system.edit',
             ],
             
             'Manager' => [
@@ -81,6 +85,7 @@ class PermissionSeeder extends Seeder
                 'user-management.role.view',
                 'settings.view',
                 'settings.general.view',
+                'settings.notifications.view',
             ],
             
             'User' => [
