@@ -12,9 +12,6 @@
             @if ($createButton)
                 <x-button icon="o-plus" class="btn-primary" wire:click="create" />
             @endif
-            @if ($customButton)
-                <x-button icon="o-plus" class="btn-primary" wire:click="custom" />
-            @endif
             <x-theme-toggle class="btn btn-circle" />
         </x-slot:actions>
     </x-header>
