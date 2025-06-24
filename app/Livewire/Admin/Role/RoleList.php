@@ -28,15 +28,15 @@ class RoleList extends Component
 
     #[Validate('required|string|min:2|max:255')]
     public string $name = '';
-    
+
     public array $selectedPermissions = [];
     public $allPermissions = [];
-    
+
     // New properties for permissions modal
     public bool $permissionsModal = false;
     public $rolePermissions = [];
     public string $selectedRoleName = '';
-    
+
     // Properties for edit permissions modal
     public bool $editPermissionsModal = false;
     public ?int $editingPermissionsRoleId = null;
@@ -60,7 +60,7 @@ class RoleList extends Component
     public function getRoles()
     {
         $query = Role::query();
-        
+
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%');
         }
@@ -156,7 +156,7 @@ class RoleList extends Component
             );
             return;
         }
-    
+
 
         if ($role->users()->exists()) {
             $this->error(
@@ -181,8 +181,8 @@ class RoleList extends Component
 
         $this->getRoles();
     }
-    
-    
+
+
     public function showPermissions($id)
     {
         try {
@@ -198,7 +198,7 @@ class RoleList extends Component
             );
         }
     }
-    
+
     public function editPermissions($id)
     {
         try {
@@ -206,7 +206,7 @@ class RoleList extends Component
             $this->editingPermissionsRoleId = $role->id;
             $this->selectedRoleName = $role->name;
             $this->allPermissions = Permission::all()->toArray();
-            $this->selectedPermissionsForEdit = $role->permissions->pluck('id')->toArray();
+            $this->selectedPermissionsForEdit = $role->permissions->pluck('name')->toArray();
             $this->editPermissionsModal = true;
         } catch (\Exception $e) {
             $this->error(
@@ -216,19 +216,19 @@ class RoleList extends Component
             );
         }
     }
-    
+
     public function savePermissions()
     {
         try {
             $role = Role::findOrFail($this->editingPermissionsRoleId);
             $role->syncPermissions($this->selectedPermissionsForEdit);
-            
+
             $this->success(
                 'Permissions updated successfully!',
                 timeout: 5000,
                 position: 'toast-top toast-end'
             );
-            
+
             $this->reset(['editPermissionsModal', 'editingPermissionsRoleId', 'selectedPermissionsForEdit', 'allPermissions']);
         } catch (\Exception $e) {
             $this->error(
@@ -238,7 +238,7 @@ class RoleList extends Component
             );
         }
     }
-    
+
     public function render()
     {
         $headers = [
